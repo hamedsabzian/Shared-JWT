@@ -1,0 +1,31 @@
+@ISSUER = https://localhost:7222
+@AUDIENCE = https://localhost:7272
+
+
+### authenticate user
+POST {{ISSUER}}/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "userName": "foo",
+  "password": "bar"
+}
+
+> {%
+    client.global.set("ACCESS_TOKEN", response.body.accessToken);
+%}
+
+### get user info
+GET {{ISSUER}}/user-info
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+### get user data from another service
+GET {{AUDIENCE}}/user-data
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{ACCESS_TOKEN}}
+
+###
